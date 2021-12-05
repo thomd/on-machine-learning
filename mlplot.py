@@ -2,13 +2,21 @@ from matplotlib import pyplot as plt
 import numpy as np
 from PIL import Image
 
-def plot_gan_samples(samples, show=True):
+def plot_gan_samples(samples):
     fig, axes = plt.subplots(figsize=(10, 2), nrows=1, ncols=len(samples), sharey=True, sharex=True)
     for ax, img in zip(axes.flatten(), samples):
         ax.xaxis.set_visible(False)
         ax.yaxis.set_visible(False)
         im = ax.imshow(1 - img.reshape((2,2)), cmap='Greys_r')  
-    if not show:
+    return fig, axes
+
+def plot_generator(samples, epoch):
+    fig, axes = plt.subplots(figsize=(10, 2), nrows=1, ncols=len(samples), sharey=True, sharex=True)
+    fig.suptitle(f'epoch: {epoch}', ha='left', fontweight='light')
+    for ax, img in zip(axes.flatten(), samples):
+        ax.xaxis.set_visible(False)
+        ax.yaxis.set_visible(False)
+        im = ax.imshow(1 - img.reshape((2,2)), cmap='Greys_r')  
         plt.close(fig)
     return fig, axes
 
@@ -44,4 +52,18 @@ def plot_errors(generator_errors, discriminator_errors):
     plt.title("Discriminator Error")
     plt.xlabel("Epoche")
     plt.ylabel("Error")
+    plt.show()
+    
+def plot_discriminator_accuracy(accs_real, accs_fake):
+    plt.figure(figsize=(16, 5))
+    plt.subplot(1,2,1)  
+    plt.plot(accs_real)
+    plt.title("Real Data Accuracy")
+    plt.xlabel("Epoche")
+    plt.ylabel("Accuracy")
+    plt.subplot(1,2,2)
+    plt.plot(accs_fake)
+    plt.title("Fake Data Accuracy")
+    plt.xlabel("Epoche")
+    plt.ylabel("Accuracy")
     plt.show()
