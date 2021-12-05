@@ -1,5 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import seaborn as sns
+import pandas as pd
 from PIL import Image
 
 def plot_gan_samples(samples):
@@ -67,3 +69,11 @@ def plot_discriminator_accuracy(accs_real, accs_fake):
     plt.xlabel("Epoche")
     plt.ylabel("Accuracy")
     plt.show()
+    
+def plot_1d_samples(generate_real_samples, generate_fake_samples, n=100):
+    Xr, yr = generate_real_samples(n)
+    dfr, dfr['real'] = pd.DataFrame(Xr, columns=['input', 'output']), yr
+    Xf, yf = generate_fake_samples(n)
+    dff, dff['real'] = pd.DataFrame(Xf, columns=['input', 'output']), yf
+    df = pd.concat([dfr, dff], ignore_index=True)
+    sns.scatterplot(data=df, x='input', y='output', hue='real')
