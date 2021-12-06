@@ -77,3 +77,20 @@ def plot_1d_samples(generate_real_samples, generate_fake_samples, n=100):
     dff, dff['real'] = pd.DataFrame(Xf, columns=['input', 'output']), yf
     df = pd.concat([dfr, dff], ignore_index=True)
     sns.scatterplot(data=df, x='input', y='output', hue='real')
+    
+def plot_1d_performance(epoch, x_real, x_fake, accuracy_real, accuracy_fake):
+    fig = plt.figure(figsize=(19, 5))
+    plt.subplot(1,3,1)
+    plt.xlim(-1.25, 1.25)
+    plt.ylim(-0.25, 0.75)
+    plt.title(f'Epoch: {epoch:0>5d}')
+    plt.scatter(x_real[:, 0], x_real[:, 1], color='red', alpha=0.3)
+    plt.scatter(x_fake[:, 0], x_fake[:, 1], color='blue', alpha=0.3)
+    plt.subplot(1,3,2)
+    plt.title(f'Accuracy Real: {accuracy_real[-1]:.3f}')
+    plt.plot(accuracy_real)
+    plt.subplot(1,3,3)
+    plt.title(f'Accuracy Fake: {accuracy_fake[-1]:.3f}')
+    plt.plot(accuracy_fake)
+    plt.close(fig)
+    return fig
